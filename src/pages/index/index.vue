@@ -1,63 +1,71 @@
 <template>
-  <div @click="clickHandle">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
+  <div>
+    <header>
+      <div class="svgDiv"></div>
+      <!--<svg viewBox="0 0 100 100">
+        <polygon points="112,0 85,100 1000,100 1000,0" fill="#4752a4"/>
+      </svg>-->
+      <div class="header-main">
+        
+        <div class="flex-container">
+          <div class="flex-item">
+            <img :src="headerImg" alt="">
+          </div>
+          <div class="flex-item">
+            <p>缪楷</p>
+            <p>Web前端开发工程师</p>
+          </div>
+        </div>
+      </div>
+      <navigator url="/pages/menu/main" class="weui-cell__ft_in-access" hover-class="weui-cell_active"></navigator>
+    </header>
+    <!--<div class="tasks-box">
+      <div class="tasks-items">
+        <span>13</span>
+        <span>待办事项</span>
+      </div>
+      <div class="tasks-items">
+         <span>16</span>
+        <span>已完成</span>
       </div>
     </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-
-    <a href="/pages/counter/main?id=123" class="counter">去往Vuex示例页面</a>
-
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
-    </div>
+    <div class="tasks-main">
+      <h3>TODAY</h3>
+    </div>-->
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
 
 export default {
+  components: {
+  },
   data () {
     return {
-      motto: 'Hello miniprograme',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
-      }
+      headerImg: 'https://oss.anyitech.ltd/ws_oss_service/storage/file_reader/617401005A4690D46B5C0000',
+      rightBottom: {horizontal: 'right', vertical: 'bottom'},
+      list: [
+        {
+          open: false,
+          title: 'NodeJS学习',
+          main: '在云服务器创建一个进程，用NodeJS搭建Web服务器。'
+        },
+        {
+          open: false,
+          title: 'Vue+webpack学习',
+          main: '完成个人网站Vue+Webpack框架搭建以及网站首页。'
+        }
+      ]
     }
   },
 
-  components: {
-    card
-  },
-
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
+    changeToggle: function (e) {
+      var index = e.currentTarget.dataset.index
+      if (this.list[index]['open']) {
+        this.list[index]['open'] = false
       } else {
-        mpvue.navigateTo({ url })
+        this.list[index]['open'] = true
       }
     },
     clickHandle (ev) {
@@ -72,55 +80,108 @@ export default {
 }
 </script>
 
-<style scoped>
-.userinfo {
+<style lang="scss" scoped>
+header{
+    width: 100%;
+    //height:215px;
+    position: relative;
+  .weui-cell__ft_in-access{
+    position: absolute;
+    right:25px;
+    top:30px;
+    &:after{
+      width:10px;
+      height:10px;
+      border-color: #fff
+    }
+  }
+  svg,.svgDiv{
+    width:100%;
+    height: 100%;
+    background: #404996;
+    position: absolute;
+    z-index: -1;
+  };
+  .header-main{
+    padding: 10px
+  }
+  .flex-container{
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 10px 15px 15px 15px;
+    width: 100%;
+    .flex-item{
+      &:first-of-type{
+        -webkit-flex: 0.8;
+        flex: 0.8;
+        padding: 10px 0;
+        >img{
+          width: 90px;
+          height:90px;
+          //background: #fff;
+          border-radius: 500px
+        }
+      }
+      &:last-of-type{
+        -webkit-flex: 2;
+        flex: 2;
+        >p{
+          padding-left: 26px;
+          color: #68d3ff;
+          font-size: 16px;
+          margin: 5px 0;
+          &:first-of-type{
+            color: #fff;
+            font-size: 18px
+          }
+        }
+      }
+    }
+  }
+}
+.tasks-box{
   display: flex;
-  flex-direction: column;
+  text-align: center;
+  -webkit-align-items: center;
   align-items: center;
+  .tasks-items{
+    flex: 1;
+    padding: 20px 0;
+    background: #4dc2ff;
+    color: #fff;
+    &:last-of-type{
+      background: #ff7fe5;
+    }
+    >span{
+      display: block;
+      line-height: 1.3;
+      &:first-of-type{
+        font-size: 34px
+      }
+      &:last-of-type{
+        font-size: 14px
+      }
+    }
+  }
 }
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.tasks-main{
+  padding:26px 20px;
+  >h3{
+    font-size: 22px;
+    color: #8393a3;
+  }
 }
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
-}
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
-}
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
-}
-
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
+.weui-cell-rot {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  font-size: 34rpx;
+  width: 92%;
+  padding: 0 4%;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-bottom: 1rpx solid #f1f1f1;
 }
 </style>
